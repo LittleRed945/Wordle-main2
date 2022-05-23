@@ -99,8 +99,6 @@ struct game_variable{
             for j in keyboard[i].indices{
                 if chr == keyboard[i][j].chr.lowercased(){
                     return [i,j]
-                }else{
-                    print("\(chr):\(keyboard[i][j].chr)")
                 }
             }
         }
@@ -128,11 +126,10 @@ struct game_variable{
                 keyboard[chr_index[0]][chr_index[1]].color=incorrect_color
                 wrong_letter_count+=1
             }
-            print(chr_index)
+            
         }
         if wrong_letter_count==0{
             iscorrect=true
-            print("J")
         }else{
             wrong_count+=1
             inputs=[Substring]()
@@ -152,7 +149,7 @@ struct game_variable{
                 }
                 result_str.append(result_row)
             }
-            playTime +=  60 * 5
+            playTime = Date().timeIntervalSince1970 +  60*5 //when can play again
             show_result=true
         }
     }

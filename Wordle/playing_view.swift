@@ -15,6 +15,14 @@ struct playing_view:View{
                     Text("RPG Wordle").font(.title)
                         .fontWeight(.heavy)
                         .foregroundColor(Color.red)
+                        .onAppear {
+                            //bgm
+                            let fileUrl = Bundle.main.url(forResource: "battle", withExtension: "mp3")!
+                            let playerItem = AVPlayerItem(url: fileUrl)
+                            self.player.replaceCurrentItem(with: playerItem)
+                            self.player.play()
+                            //
+                        }
                     Button(action: {game.opensetting=true}, label: {
                         Image(systemName: "gearshape.fill")
                     }).sheet(isPresented: $game.opensetting, content: {
@@ -29,6 +37,7 @@ struct playing_view:View{
                     game.topics = content.split(separator: "\r\n")
                     game.topic=String(game.topics.randomElement()!)
                     game.board_init()
+                    
                 }).disabled(game.disable_setting)
                 Text("len:"+String(Int(game.topic_len)))
                 generate_board(game: game)
@@ -39,13 +48,7 @@ struct playing_view:View{
         }
         .background(Image("Wordle_background").resizable().scaledToFill())
         .onAppear {
-            //bgm
-            let fileUrl = Bundle.main.url(forResource: "battle", withExtension: "mp3")!
-            let playerItem = AVPlayerItem(url: fileUrl)
-            self.player.replaceCurrentItem(with: playerItem)
-            self.player.play()
-    
-            //
+            
             let content = readFile(topic_len: game.topic_len)
             game.topics = content.split(separator: "\r\n")
             game.topic=String(game.topics.randomElement()!)

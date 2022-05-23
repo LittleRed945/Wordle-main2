@@ -13,6 +13,7 @@ struct main_interface_view:View{
             Spacer()
             HStack{
                 Button(action: {
+                    
                     let time1 = Date()
                     let time2=Date(timeIntervalSince1970: game.playTime)
                     let components = Calendar.current.dateComponents([.minute], from: time1, to:
@@ -21,6 +22,7 @@ struct main_interface_view:View{
                     if let tmp = components.minute{
                         min = tmp
                         if tmp <= 0{
+                            game.reset()
                             game.isplaying = true
                             cannotPlay=false
                             
@@ -32,6 +34,7 @@ struct main_interface_view:View{
                 }, label: {
                     Image(systemName: "play.fill")
                         .foregroundColor(.black)
+                    
                 }).alert(isPresented: $cannotPlay, content:{
                     return Alert(title:Text("\(min) minutes left"))
                 })

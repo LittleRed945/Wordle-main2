@@ -25,16 +25,16 @@ struct keyboard_view:View{
                     for i in game.topics.indices{
                         topics.append(Substring(game.topics[i].lowercased()))
                     }
-                    
-                    if !topics.contains(Substring(inputs.lowercased())){
+                    if game.inputs.endIndex<Int(game.topic_len){
+                        active_alert=true
+                        alert_title="not enough!"
+                    }
+                    else if !topics.contains(Substring(inputs.lowercased())){
                         active_alert=true
                         alert_title="not in list!"
                     }
-                    else if game.inputs.endIndex==Int(game.topic_len){
+                    else {
                         game.correct_or_not()
-                    }else{
-                        active_alert=true
-                        alert_title="not enough!"
                     }
                     
                 }else{

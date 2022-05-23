@@ -7,7 +7,9 @@
 
 import Foundation
 import SwiftUI
+import AVFoundation
 struct ResultView:View{
+    let player=AVPlayer()
     @Binding var game:game_variable
     var body:some View{
         VStack{
@@ -16,7 +18,14 @@ struct ResultView:View{
                 
                 Text("Congratulations!").font(.largeTitle)
                 Text("you're correct!")
-                
+                    .onAppear {
+                        //bgm
+                        let fileUrl = Bundle.main.url(forResource: "win", withExtension: "mp3")!
+                        let playerItem = AVPlayerItem(url: fileUrl)
+                        self.player.replaceCurrentItem(with: playerItem)
+                        self.player.play()
+                        //
+                    }
                 
                 
             }else{
@@ -24,7 +33,14 @@ struct ResultView:View{
                 
                 Text("Game Over").font(.largeTitle)
                 Text("you're wrong,the answer is \(game.topic)")
-                
+                    .onAppear {
+                        //bgm
+                        let fileUrl = Bundle.main.url(forResource: "lose", withExtension: "mp3")!
+                        let playerItem = AVPlayerItem(url: fileUrl)
+                        self.player.replaceCurrentItem(with: playerItem)
+                        self.player.play()
+                        //
+                    }
                 
                 
             }
@@ -40,7 +56,7 @@ struct ResultView:View{
                 }
             })
             Button(action:  {game.isplaying=false
-                game.reset()
+                
             }, label: {
                 Image(systemName:"house.circle")
             })
