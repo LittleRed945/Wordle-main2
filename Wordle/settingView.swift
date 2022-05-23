@@ -14,9 +14,9 @@ struct settingView: View {
             VStack{
                 
                 //color picker
-                ColorPicker("Correct:", selection: $game.correct_color)
-                ColorPicker("Wrong:", selection: $game.incorrect_color)
-                ColorPicker("Wrong position:", selection: $game.wrong_pos_color)
+                ColorPicker("Correct:", selection: $game.correct_color).disabled(game.disable_setting)
+                ColorPicker("Not exist:", selection: $game.incorrect_color).disabled(game.disable_setting)
+                ColorPicker("Wrong position:", selection: $game.wrong_pos_color).disabled(game.disable_setting)
                 //
             }
             Button(action: {game.opensetting=false}, label: {

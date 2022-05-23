@@ -9,7 +9,12 @@ struct board_view:View{
             Rectangle()
                 .fill(tile.color)
             .frame(width: 30, height:40)
-            Text(tile.word).frame(width: 30, height:40)
+            if(tile.word == ""){
+                Text("").frame(width: 30, height:40)
+            }else{
+                Text(tile.word).frame(width: 30, height:40)
+            }
+            
         }
         
 

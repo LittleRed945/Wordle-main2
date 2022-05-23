@@ -1,15 +1,18 @@
 import SwiftUI
+import AVFoundation
 struct playing_view:View{
     @Binding var game:game_variable
-    
+    let player=AVPlayer()
     var body: some View {
         VStack {
             if game.topics.isEmpty != true {
                 HStack{
-                    Button(action:  {game.isplaying=false}, label: {
+                    Button(action:  {game.isplaying=false
+                        game.reset()
+                    }, label: {
                         Image(systemName:"house.circle")
                     })
-                    Text("Wordle").font(.title)
+                    Text("RPG Wordle").font(.title)
                         .fontWeight(.heavy)
                         .foregroundColor(Color.red)
                     Button(action: {game.opensetting=true}, label: {
@@ -26,7 +29,7 @@ struct playing_view:View{
                     game.topics = content.split(separator: "\r\n")
                     game.topic=String(game.topics.randomElement()!)
                     game.board_init()
-                })
+                }).disabled(game.disable_setting)
                 Text("len:"+String(Int(game.topic_len)))
                 generate_board(game: game)
                 keyboard(game:$game)
@@ -36,11 +39,19 @@ struct playing_view:View{
         }
         .background(Image("Wordle_background").resizable().scaledToFill())
         .onAppear {
+            //bgm
+            let fileUrl = Bundle.main.url(forResource: "battle", withExtension: "mp3")!
+            let playerItem = AVPlayerItem(url: fileUrl)
+            self.player.replaceCurrentItem(with: playerItem)
+            self.player.play()
+    
+            //
             let content = readFile(topic_len: game.topic_len)
             game.topics = content.split(separator: "\r\n")
             game.topic=String(game.topics.randomElement()!)
             print(game.topics)
             game.board_init()
+            game.keyboard_init()
         }
     }
     

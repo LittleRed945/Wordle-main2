@@ -4,10 +4,10 @@ struct generate_board:View{
     
     var body: some View{
         VStack(spacing:5){
-            ForEach(game.input_board,id:\.self){row in
+            ForEach(game.input_board.indices,id:\.self){i in
                 HStack(spacing:5){
-                    ForEach(row,id:row.i    d){tile in
-                        board_view(tile:tile )
+                    ForEach(game.input_board[i].indices,id:\.self){j in
+                        board_view(tile:game.input_board[i][j] )
                     }
                 }
             

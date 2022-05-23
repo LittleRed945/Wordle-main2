@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    
     @State private var game = game_variable()
     var body:some View{
         if game.isplaying == false {

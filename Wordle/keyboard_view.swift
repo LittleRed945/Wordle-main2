@@ -1,33 +1,57 @@
 import SwiftUI
 struct keyboard_view:View{
     @Binding var game:game_variable
-    let str:Substring
+    let i:Int
+    let j:Int
     let len:Int
-    
+    @State private var active_alert=false
+    @State private var alert_title=""
+    @State private var topics=[Substring]()
     var body:some View{
         ZStack{
             Rectangle()
-                .fill(Color.gray)
+                .fill(game.keyboard[i][j].color)
                 .frame(width: CGFloat(len)*15, height:25)
             Button(action: {
-                if str.lowercased() == "Delete".lowercased(){
+                if game.keyboard[i][j].chr.lowercased() == "Delete".lowercased(){
                     if game.inputs.count > 0{
                         game.inputs.popLast()
                     }
                     
-                }else if str.lowercased() == "Enter".lowercased(){
-                    let word = game.inputs.joined(separator: "").lowercased()
+                }else if game.keyboard[i][j].chr.lowercased() == "Enter".lowercased(){
+                    let inputs = game.inputs.joined()
+                    
+                    
+                    for i in game.topics.indices{
+                        topics.append(Substring(game.topics[i].lowercased()))
+                    }
+                    
+                    if !topics.contains(Substring(inputs.lowercased())){
+                        active_alert=true
+                        alert_title="not in list!"
+                    }
+                    else if game.inputs.endIndex==Int(game.topic_len){
+                        game.correct_or_not()
+                    }else{
+                        active_alert=true
+                        alert_title="not enough!"
+                    }
+                    
                 }else{
                     if Int(game.topic_len)>game.inputs.count{
-                        game.inputs.append(str)
+                        game.inputs.append(game.keyboard[i][j].chr)
                     }
                     
                 }
                 game.input_to_board()
             }, label: {
-                Text(str).font(.system(size: CGFloat(20/len)))
-                    .foregroundColor(.white)
-            })
+                Text(game.keyboard[i][j].chr).font(.system(size: CGFloat(20/len)))
+                    .foregroundColor(.black)
+            }).alert(isPresented: $active_alert, content:{
+                return Alert(title:Text(alert_title))
+            }).sheet(isPresented: $game.show_result){
+                ResultView(game: $game)
+            }
         }
         
 
